@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   <mapper namespace="com.bawei.dao.MovieDao">
+   
+   
+   <select id="list" resultType="Movie">
+   
+   select  *  from  movie
+   <where>
+   <!-- 电影名称  -->
+     <if test="mname!=null and mname!=''">and mname like concat('%',#{mname},'%')</if>
+   <!-- 电影主角 -->
+     <if test="mactor!=null and mactor!=''">and mactor like concat('%',#{mactor},'%')</if>
+   <!-- 电影时长 -->
+     <if test="myear!=null"> and myear like concat('%',#{myear},'%')</if>
+   <!-- 上映时间 -->
+     <if test="s1!=null and s1!=''">and muptime &gt;= #{s1}</if>
+     <if test="s2!=null and s2!=''">and muptime &lt;= #{s2}</if>
+   <!-- 电影价格 -->
+     <if test="p1!=null and p1!=''">and mprice &gt;= #{p1}</if>
+     <if test="p2!=null and p2!=''">and mprice &lt;= #{p2}</if>
+   <!-- 电影时长 -->
+     <if test="b1!=null and b1!=''">and mtime &gt;= #{b1}</if>
+     <if test="b2!=null and b2!=''">and mtime &lt;= #{b2}</if>
+   
+   </where>
+    <if test="(orderName!=null and orderName!='')and (orderMethod!=null and Method!='')">
+    
+     order by ${orderName} ${orderMethod}
+    
+    </if>
+   
+   </select>
+   
+   <delete id="delete">
+   
+   delete  from  movie where mid in 
+   <foreach collection="array" item="mid" open="(" separator="," close=")">
+     #{mid}
+   </foreach>
+   </delete>
+   
+   </mapper>
